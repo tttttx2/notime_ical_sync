@@ -3,8 +3,13 @@
 $user = $_GET["user"];
 $pass = $_GET["pass"];
 
-if(empty($_GET["pass"]) or empty($_GET["pass"]) or empty($_GET["AhNgohnoo5goh2pahdee"])){ //I know that's not a secure way to do tokens...
+if(empty($_GET["pass"]) or empty($_GET["pass"]) or empty($_GET["token"])){ //I know that's not a secure way to do tokens...
 echo "LOGIN ERROR";
+die();
+}
+
+if(md5($_GET["token"])!=="529c33c057279833e0b1b50ebf149b64"){
+echo "TOKEN ERROR";
 die();
 }
 
