@@ -67,9 +67,7 @@ curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
 ));
 
 $output = curl_exec($cURLConnection);
-//curl_close($cURLConnection);
 
-// print_r($output);
 preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $output, $matches);
 $cookies = array();
 foreach($matches[1] as $item) {
@@ -83,8 +81,6 @@ foreach($cookies as $k=>$v){
 $cookies_str = substr($cookies_str, 0, -2);
 curl_close($cURLConnection);
 
-// print_r($cookies_str);
-// die();
 /* Get timeslot data*/
 
 $cURLConnection = curl_init();
@@ -112,9 +108,7 @@ curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
 $output = curl_exec($cURLConnection);
 curl_close($cURLConnection);
 
-//print_r($output);
 $json = json_decode(json_decode($output, true), true);
-//print_r($json);
 
 
 /*create ical*/
