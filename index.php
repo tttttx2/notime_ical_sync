@@ -148,12 +148,3 @@ if ($v["Status"]==2 or $v["Status"]==1){
 
 $ics = new ICS($content);
 echo $ics->to_string();
-
-die();
-libxml_use_internal_errors(true);
-$dom = new DOMDocument();
-@$dom->loadHTML($output);
-libxml_use_internal_errors(false);
-$xpath = new DOMXpath($dom);
-$node = $xpath->query('//input[@name="__RequestVerificationToken"]/attribute::value');
-$token = $node->item(0)->nodeValue;
