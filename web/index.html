@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- based on the bootstrap sign in example -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Notime icalendar generator</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./signin.css" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  </head>
+
+  <body class="text-center">
+  <script>
+
+    $(document).ready(function() {
+
+       //check token here
+       
+       $('#submit').click(function() {
+          $.ajax({
+             type: "POST",
+             url: "https://operation.notimeapi.com:443/Home/Login",
+             data: {"Login":$("#inputUser").val(), "Password":$("#inputUser").val()},
+             success: function(msg) {
+                alert("Form Submitted: " + msg);
+             }
+          });
+
+       });
+
+    });
+
+</script>
+  
+    <form class="form-signin" id="my_form">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in using the token provided</h1>
+      <label for="inputUser" class="sr-only">Username</label>
+      <input type="text" id="inputUser" class="form-control" placeholder="Username" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <label for="inputToken" class="sr-only">Token</label>
+      <input type="text" id="inputToken" class="form-control" placeholder="token provided" required>
+      <button class="btn btn-lg btn-primary btn-block" type="button" id="submit">Generate ical URL</button>
+      <p class="mt-5 mb-3 text-muted">This is not an official Notime application! Use at your own risk.</p>
+    </form>
+  </body>
+</html>
