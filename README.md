@@ -2,6 +2,8 @@
 Synchronize Notime.ch shifts from the picking system via icalendar to any device.
 
 # How to add this to my phone?
+Create your personal link [here](https://tttttx2.github.io/notime_ical_sync)
+
 Simply login to google calendar on your desktop and go to "add calendar" --> "From URL" and enter the URL containing your credentials.
 
 http://[placeholder].execute-api.eu-central-1.amazonaws.com/index.php?user=[placeholder]&pass=[placeholder]&token=[placeholder]
