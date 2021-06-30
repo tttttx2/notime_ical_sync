@@ -1,8 +1,5 @@
 <?php
 
-$user = $_GET["user"];
-$pass = $_GET["pass"];
-
 if(empty($_GET["pass"]) or empty($_GET["pass"]) or empty($_GET["token"])){ //I know that's not a secure way to do tokens...
 echo "LOGIN ERROR";
 die();
@@ -12,6 +9,11 @@ if(md5($_GET["token"])!=="529c33c057279833e0b1b50ebf149b64"){
 echo "TOKEN ERROR";
 die();
 }
+
+
+$user = $_GET["user"];
+$pass = $_GET["pass"];
+
 
 /* GET VERIFICATION TOKEN*/
 $cURLConnection = curl_init();
@@ -67,9 +69,7 @@ curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
 ));
 
 $output = curl_exec($cURLConnection);
-//curl_close($cURLConnection);
 
-// print_r($output);
 preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $output, $matches);
 $cookies = array();
 foreach($matches[1] as $item) {
@@ -83,8 +83,6 @@ foreach($cookies as $k=>$v){
 $cookies_str = substr($cookies_str, 0, -2);
 curl_close($cURLConnection);
 
-// print_r($cookies_str);
-// die();
 /* Get timeslot data*/
 
 $cURLConnection = curl_init();
@@ -112,9 +110,7 @@ curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
 $output = curl_exec($cURLConnection);
 curl_close($cURLConnection);
 
-//print_r($output);
 $json = json_decode(json_decode($output, true), true);
-//print_r($json);
 
 
 /*create ical*/
@@ -148,12 +144,3 @@ if ($v["Status"]==2 or $v["Status"]==1){
 
 $ics = new ICS($content);
 echo $ics->to_string();
-
-die();
-libxml_use_internal_errors(true);
-$dom = new DOMDocument();
-@$dom->loadHTML($output);
-libxml_use_internal_errors(false);
-$xpath = new DOMXpath($dom);
-$node = $xpath->query('//input[@name="__RequestVerificationToken"]/attribute::value');
-$token = $node->item(0)->nodeValue;
