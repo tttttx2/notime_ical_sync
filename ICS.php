@@ -79,7 +79,8 @@ class ICS {
     'dtstart',
     'location',
     'summary',
-    'url'
+    'url',
+    'uid'
   );
 
   public function __construct($events) {
@@ -131,7 +132,7 @@ class ICS {
 
         // Set some default values
         $props['DTSTAMP'] = $this->format_timestamp('now');
-        $props['UID'] = md5($props["DESCRIPTION"].$props["SUMMARY"].$props["DTSTART"].$props["DTEND"]);
+        //$props['UID'] = md5($props["DESCRIPTION"].$props["SUMMARY"].$props["DTSTART"].$props["DTEND"]);
         // Append properties
         foreach ($props as $k => $v) {
         $ics_props[] = "$k:$v";

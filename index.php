@@ -83,13 +83,13 @@ foreach($cookies as $k=>$v){
 $cookies_str = substr($cookies_str, 0, -2);
 curl_close($cURLConnection);
 
-/* Get timeslot data*/
+/* Get timeslot data for weeks 0-2*/
 
 $cURLConnection = curl_init();
 $date = new DateTime('now');
 $from = $date->format('d.m.Y');
 $unix = $date->format('U');
-$date = new DateTime('now +1 month');
+$date = new DateTime('now +2 weeks');
 $to = $date->format('d.m.Y');
 curl_setopt($cURLConnection, CURLOPT_URL, 'https://operation.notimeapi.com/TimeSlotPicker/GetTimeSlots?from='.$from.'&to='.$to.'&_='.$unix);
 curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
@@ -112,6 +112,39 @@ curl_close($cURLConnection);
 
 $json = json_decode(json_decode($output, true), true);
 
+/* Get timeslot data for weeks 2-4*/
+
+$cURLConnection = curl_init();
+$date = new DateTime('now +2 weeks');
+$from = $date->format('d.m.Y');
+$unix = $date->format('U');
+$date = new DateTime('now +4 weeks');
+$to = $date->format('d.m.Y');
+curl_setopt($cURLConnection, CURLOPT_URL, 'https://operation.notimeapi.com/TimeSlotPicker/GetTimeSlots?from='.$from.'&to='.$to.'&_='.$unix);
+curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($cURLConnection, CURLOPT_HTTPHEADER, array(
+    "Connection: close",
+    "Upgrade-Insecure-Requests: 1",
+    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
+    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+    "Sec-Fetch-Site: none",
+    "Sec-Fetch-Mode: navigate",
+    "Sec-Fetch-User: ?1",
+    "Sec-Fetch-Dest: document",
+    "Accept-Encoding: deflate",
+    "Accept-Language: en-US,en;q=0.9",
+    "Cookie: ".$cookies_str
+));
+
+$output = curl_exec($cURLConnection);
+curl_close($cURLConnection);
+
+$json2 = json_decode(json_decode($output, true), true);
+
+//print_r($json);
+//print_r($json2);
+
+//die();
 
 /*create ical*/
 include 'ICS.php';
@@ -135,6 +168,24 @@ if ($v["Status"]==2 or $v["Status"]==1){
     'description' => $v["TimeSlotTemplateDescriptionText"],
     'dtstart' => $v["start"],
     'dtend' => $v["end"],
+    'uid' => $v["id"],
+    'summary' => $v["TimeSlotTemplateText"],
+    'url' => ""
+    );
+    }
+
+}
+
+$events2 = $json2["events"];
+
+foreach ($events2 as $k => $v){
+if ($v["Status"]==2 or $v["Status"]==1){
+    $content[]=array(
+    'location' => "",
+    'description' => $v["TimeSlotTemplateDescriptionText"],
+    'dtstart' => $v["start"],
+    'dtend' => $v["end"],
+    'uid' => $v["id"],
     'summary' => $v["TimeSlotTemplateText"],
     'url' => ""
     );
