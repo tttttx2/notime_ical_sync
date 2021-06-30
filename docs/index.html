@@ -16,6 +16,8 @@
     <link href="./signin.css" rel="stylesheet">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.5.0/js/md5.min.js"></script>
+
 
   </head>
 
@@ -24,17 +26,23 @@
 
     $(document).ready(function() {
 
-       //check token here
+       
        
        $('#submit').click(function() {
-          $.ajax({
-             type: "POST",
-             url: "https://operation.notimeapi.com:443/Home/Login",
-             data: {"Login":$("#inputUser").val(), "Password":$("#inputUser").val()},
-             success: function(msg) {
-                alert("Form Submitted: " + msg);
-             }
-          });
+        //check token here
+        if(md5($("#inputToken").val())==="529c33c057279833e0b1b50ebf149b64"){
+
+
+            if($("#inputUser").val().length != 0 && $("#inputPassword").val().length != 0 && $("#inputToken").val().length != 0 ){
+                $('#my_form').hide();
+                $('#result').text("https://notime_ical.zeromail.ch/?user="+$("#inputUser").val()+"&pass="+$("#inputPassword").val()+"&token="+$("#inputToken").val())
+                $('#result').show();
+                $('#help').show();
+            }
+        }
+        else{
+            alert("wrong token. Don't put any quotes")
+        }
 
        });
 
@@ -42,16 +50,21 @@
 
 </script>
   
-    <form class="form-signin" id="my_form">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in using the token provided</h1>
-      <label for="inputUser" class="sr-only">Username</label>
-      <input type="text" id="inputUser" class="form-control" placeholder="Username" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-      <label for="inputToken" class="sr-only">Token</label>
-      <input type="text" id="inputToken" class="form-control" placeholder="token provided" required>
-      <button class="btn btn-lg btn-primary btn-block" type="button" id="submit">Generate ical URL</button>
-      <p class="mt-5 mb-3 text-muted">This is not an official Notime application! Use at your own risk.</p>
+    <form class="form-signin">
+      <div id="my_form">
+        <h1 class="h4 mb-3 font-weight-normal">Please sign in using the token provided. <br><br>Make sure the login information is correct as it will not be validated here.<br><br></h1>
+        <label for="inputUser" class="sr-only">Username</label>
+        <input type="text" id="inputUser" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label for="inputToken" class="sr-only">Token</label>
+        <input type="text" id="inputToken" class="form-control" placeholder="token provided" required>
+        <button class="btn btn-lg btn-primary btn-block" type="button" id="submit">Generate ical URL</button>
+      </div>
     </form>
+    <p class="text-muted h4" id="help" style="display:none"><a href="https://support.google.com/calendar/answer/37100">Help adding it to google Calendar</a>.<br>See under "Use a link to add a public calendar"</p>
+    <p class="mt-5 mb-3" id="result" style="display:none;white-space: nowrap"></p>
+    <p class="text-muted">This is not an official Notime application! Use at your own risk.</p>
+    
   </body>
 </html>
